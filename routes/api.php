@@ -35,7 +35,7 @@ use \App\Models\StoreItem;
 
 
 //POST_OFFICE
-Route::get("/postOffice", [PostOfficeController::class, 'getAll']);
+Route::middleware('auth:api')->get("/postOffice", [PostOfficeController::class, 'getAll']);
 Route::get("/postOffice/{id}", [PostOfficeController::class, 'get']);
 Route::post("/postOffice", [PostOfficeController::class, 'create']);
 Route::put("/postOffice", [PostOfficeController::class, 'update']);
@@ -57,12 +57,17 @@ Route::put("/role",[RoleController::class, 'update']);
 Route::delete("/role/{id}", [RoleController::class, 'delete']);
 
 //USER
+Route::get("/user/self", [UserController::class, 'getSelf']);
 Route::get("/user", [UserController::class, 'getAll']);
 Route::get("/user/{id}", [UserController::class, 'get']);
 Route::get("/user/{id}/order", [UserController::class, 'getAllOrders']);
 Route::get("/user/{id}/order/{orderId}", [UserController::class, 'getOrder']);
 Route::post("/user/{id}/order", [UserController::class, 'createOrder']);
 Route::post("/user", [UserController::class, 'create']);
+
+
+
+Route::post('/login', [\App\Http\Controllers\Api\Auth\LoginController::class, 'login']);
 
 
 

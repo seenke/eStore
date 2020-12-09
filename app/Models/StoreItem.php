@@ -18,7 +18,6 @@ class StoreItem extends Model
 
     protected $fillable = [
         "price",
-        "picture",
         "name",
         "description",
     ];
@@ -26,6 +25,11 @@ class StoreItem extends Model
     public function orders ()
     {
         return $this->belongsToMany('App\Models\Order');
+    }
+
+    public function pictures ()
+    {
+        return $this->hasMany('App\Models\Picture');
     }
 
 }

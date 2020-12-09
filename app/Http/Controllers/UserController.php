@@ -11,8 +11,10 @@ use App\Models\StoreItem;
 use App\Models\User;
 use App\Models\UserAccount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
-class UserController
+class UserController extends Controller
 {
     public function create (Request $request)
     {
@@ -36,8 +38,11 @@ class UserController
         $user = new User();
         $user->save();
 
-        //Creating userAccount
+        //Creating userAccount hasing password and generating API token
         $userAccount = new UserAccount();
+        $accountData['password'] = Hash::make($accountData['password']);
+        $accountData['api_token'] = Str::random(60);
+
         $userAccount->fill($accountData);
         $userAccount->role()->associate($role);
 
@@ -132,5 +137,27 @@ class UserController
     public function delete (Request $request)
     {
         //IMPLEMENT DELETING
+    }
+
+    public function getSelf (Request  $request)
+    {
+
+        $userAccount = $this->authUser();
+        if (!$this->authorizeUser('customer')) {
+            return response()->json(['error' => 'Not allowed'],403);
+        }
+
+        return $userAccount->only([
+            'name',
+            'lastname',
+            'email'
+        ]);
+    }
+
+    //TODO: implement logic for self updating, order adding etc ...
+    public function getSelfOrder (Request $request)
+    {
+        $userAccount = $this->authUser();
+
     }
 }

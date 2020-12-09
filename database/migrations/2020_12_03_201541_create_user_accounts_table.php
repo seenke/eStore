@@ -21,8 +21,11 @@ class CreateUserAccountsTable extends Migration
             $table->string('lastname');
             $table->string('email');
             $table->string('password');
+            $table->string("api_token", 80)->unique()
+                ->nullable()
+                ->default(null);
             $table->unsignedBigInteger('role_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id') -> nullable();
             $table->foreign('role_id')
                 ->references('id')
                 ->on('role');

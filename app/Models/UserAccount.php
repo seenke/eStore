@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
-class UserAccount extends Model
+class UserAccount extends Authenticatable implements JWTSubject
 {
     use HasFactory;
     use SoftDeletes;
@@ -15,7 +17,8 @@ class UserAccount extends Model
         "name",
         "lastname",
         "email",
-        "password"
+        "password",
+        "api_token"
     ];
 
     protected $table = "user_account";
@@ -29,5 +32,15 @@ class UserAccount extends Model
     public function role()
     {
         return $this->belongsTo('App\Models\Role');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

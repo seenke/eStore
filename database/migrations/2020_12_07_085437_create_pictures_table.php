@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoreItemsTable extends Migration
+class CreatePicturesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateStoreItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('store_item', function (Blueprint $table) {
-
-            $table->bigIncrements('id');
+        Schema::create('picture', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
-            $table->decimal('price');
-            $table->string('name');
-            $table->string('description');
-            $table->softDeletes();
+            $table->string('image');
+            $table->unsignedBigInteger("store_item_id");
+            $table->foreign('store_item_id')
+                ->references('id')
+                ->on('store_item');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateStoreItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('store_item');
+        Schema::dropIfExists('pictures');
     }
 }
