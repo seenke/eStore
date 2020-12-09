@@ -11,6 +11,7 @@ use App\Models\StoreItem;
 use App\Models\User;
 use App\Models\UserAccount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -66,6 +67,7 @@ class UserController extends Controller
 
     public function createOrder (Request $request)
     {
+
         $user = User::find($request->route('id'));
 
         $order = new Order();
@@ -93,6 +95,8 @@ class UserController extends Controller
             $storeItemModel = StoreItem::find($storeItem['id']);
             array_push($storeItemModels, $storeItemModel);
         }
+
+
 
         $order->storeItems()->saveMany($storeItemModels);
 
@@ -148,6 +152,7 @@ class UserController extends Controller
         }
 
         return $userAccount->only([
+            'id',
             'name',
             'lastname',
             'email'
@@ -157,7 +162,28 @@ class UserController extends Controller
     //TODO: implement logic for self updating, order adding etc ...
     public function getSelfOrder (Request $request)
     {
-        $userAccount = $this->authUser();
+        try {
+            $userAccount = $this->authUser();
+            $user = $userAccount->user()->get()[0];
+            $responseArr = ["orders" => []];
+            foreach ($user->orders()->get() as $order) {
+                $orderArr = [
+                    "storeItems" => $order -> storeItems() -> get(),
+                    "order" => $order,
+                    "status" => $order -> status() -> get()
+                ];
+                array_push($responseArr["orders"], $orderArr);
+            }
+
+        }catch ( \Exception $exception ) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+
+        return response() -> json($responseArr, 200);
+    }
+
+    public function createSelfOrder (Request $request)
+    {
 
     }
 }

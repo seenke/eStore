@@ -24,7 +24,7 @@ class UserAccount extends Authenticatable implements JWTSubject
     protected $table = "user_account";
 
 
-    public function user ()
+    public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
