@@ -35,7 +35,7 @@ use \App\Models\StoreItem;
 
 
 //POST_OFFICE
-Route::middleware('auth:api')->get("/postOffice", [PostOfficeController::class, 'getAll']);
+Route::get("/postOffice", [PostOfficeController::class, 'getAll']);
 Route::get("/postOffice/{id}", [PostOfficeController::class, 'get']);
 Route::post("/postOffice", [PostOfficeController::class, 'create']);
 Route::put("/postOffice", [PostOfficeController::class, 'update']);
