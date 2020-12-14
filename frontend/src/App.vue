@@ -8,7 +8,7 @@
         <router-link to="/narocila" v-if="isLoggedIn"><li>NAROCILA</li></router-link>
         <router-link to="/"><li>DOMOV</li></router-link>
         <router-link to="/mojProfil" v-if="isLoggedIn"><li>MOJ PROFIL</li></router-link>
-        <router-link to="/kosarcia" v-if="isLoggedIn"><li>KOSARICA</li></router-link>
+        <router-link to="/kosarica" v-if="isLoggedIn"><li>KOSARICA</li></router-link>
       </ul>
     </div>
 

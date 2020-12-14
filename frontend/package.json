@@ -13,6 +13,7 @@
     "vue": "^2.6.11",
     "vue-captcha": "^1.0.2",
     "vue-easy-slider": "^5.3.4",
+    "vue-json-pretty": "^2.0.0",
     "vue-recaptcha-v3": "^1.9.0",
     "vue-router": "^3.4.9",
     "vue-simple-alert": "^1.1.1",

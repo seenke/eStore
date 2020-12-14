@@ -1,6 +1,7 @@
 <template>
   <ul>
     <h1>POZDRAVLJENI V SPLETNI TRGOVINI</h1>
+    <p>{{this.$store.getters.user}}</p>
   </ul>
 </template>
 
@@ -47,5 +48,8 @@ li {
 }
 a {
   color: #42b983;
+}
+h1{
+  color: white;
 }
 </style>

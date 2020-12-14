@@ -12,6 +12,7 @@ import VueSimpleAlert from "vue-simple-alert";
 import EasySlider from 'vue-easy-slider';
 import myCaptcha from 'vue-captcha'
 import Trgovina from "@/components/Trgovina";
+import Kosarica from "@/components/Kosarica";
 
 
 Vue.use(VueSimpleAlert);
@@ -25,7 +26,8 @@ const routes = [
   {path:'/', component: Home},
   {path: "/registracija", component: Registration},
   {path: "/prijava", component: Login },
-  {path: "/trgovina", component: Trgovina}
+  {path: "/trgovina", component: Trgovina},
+  {path: "/kosarica", component: Kosarica}
 ]
 
 const router = new VueRouter({

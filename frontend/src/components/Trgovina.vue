@@ -31,6 +31,11 @@ export default {
     .catch((err) => {
       console.log(err);
     })
+
+    this.$store.dispatch('getShoppingCart')
+    .then(()=> {
+      console.log(this.$store.getters.shoppingCartStatus + " status")
+    });
   }
 }
 </script>

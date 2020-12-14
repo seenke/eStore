@@ -8,13 +8,10 @@ export default class ApiService {
     }
 
     constructor(authToken) {
-        console.log(authToken === '')
         if (authToken === '') {
             return
         }
-        console.log("setting")
         axios.defaults.headers.common['Authorization'] = "Bearer " + authToken
-        console.log(authToken + " SET TO AUTHORIZATION HEADERS")
     }
 
     getPostOffices() {
@@ -66,7 +63,6 @@ export default class ApiService {
     }
 
     getStoreItems () {
-        console.log(axios.defaults.headers.common['Authorization']  + "GET STORE ITEMS  ")
         return new Promise((resolve, reject) => {
             axios.get(this.apiParameters.development + "storeItem")
                 .then((response) => {
@@ -74,6 +70,30 @@ export default class ApiService {
                 })
                 .catch((error) => {
                     reject(error)
+                })
+        })
+    }
+
+    getSelfShoppingCart() {
+        return new Promise((resolve, reject) => {
+            axios.get(this.apiParameters.development + "user/self/shoppingCart")
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        })
+    }
+
+    updateSelfShoppingCart(shoppingCart) {
+        return new Promise((resolve, reject) => {
+            axios.put(this.apiParameters.development + "user/self/shoppingCart", shoppingCart)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
                 })
         })
     }

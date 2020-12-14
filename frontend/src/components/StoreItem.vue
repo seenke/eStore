@@ -7,7 +7,7 @@
     <img :src="generateLink(picture.image)" style="width: 400px; height: 300px">
     </slider-item>
   </slider>
-  <button @click="registerEvent">ADD TO CART</button>
+  <button @click="addToCart">ADD TO CART</button>
   <div class="info">
     <div class="info_item">
       <h2>{{storeItemData.storeItem.name}}</h2>
@@ -42,15 +42,22 @@ export default {
     test() {
       console.log(this.storeItemData);
     },
-    registerEvent() {
-      console.log("Added to cart item with id: " + this.storeItemData.storeItem.id)
-    },
+    // registerEvent() {
+    //   console.log("Added to cart item with id: " + this.storeItemData.storeItem.id)
+    // },
     generateLink(picture) {
       return 'http://127.0.0.1:8001/storage/storeItems/' + picture + ".png";
+    },
+    addToCart() {
+      const obj = {
+        "id": this.storeItemData.storeItem.id,
+        "quantity": 1
+      }
+      this.$store.dispatch('updateShoppingCart', obj);
     }
   },
   beforeMount() {
-    console.log(this.storeItemData)
+    console.log(this.storeItemData.storeItem.id)
     console.log(this.storeItemData.pictureData)
   }
 
