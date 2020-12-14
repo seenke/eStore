@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderStoreItemTable extends Migration
+class CreateShoppingCartStoreItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateOrderStoreItemTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_store_item', function (Blueprint $table) {
-
-
-            $table->unsignedBigInteger('order_id');
+        Schema::create('shopping_cart_store_item', function (Blueprint $table) {
+            $table->integer('quantity');
+            $table->unsignedBigInteger('shopping_cart_id');
             $table->unsignedBigInteger('store_item_id');
-            $table->primary(['order_id', 'store_item_id']);
+            $table->primary(['shopping_cart_id', 'store_item_id']);
             $table->timestamps();
-            $table->foreign('order_id')
+            $table->foreign('shopping_cart_id')
                 ->references('id')
-                ->on('order');
+                ->on('shopping_cart');
             $table->foreign('store_item_id')
                 ->references('id')
                 ->on('store_item');
@@ -37,6 +36,6 @@ class CreateOrderStoreItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_store_item');
+        Schema::dropIfExists('shopping_cart_store_items');
     }
 }

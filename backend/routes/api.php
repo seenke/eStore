@@ -60,6 +60,8 @@ Route::delete("/role/{id}", [RoleController::class, 'delete']);
 Route::get("/user/self", [UserController::class, 'getSelf']);
 Route::get("/user/self/order", [UserController::class, 'getSelfOrder']);
 Route::post("/user/self/order", [UserController::class, 'createSelfOrder']);
+Route::put("/user/self/shoppingCart", [UserController::class, 'selfUpdateShoppingCart']);
+Route::get("/user/self/shoppingCart", [UserController::class, 'selfGetShoppingCart']);
 
 Route::get("/user", [UserController::class, 'getAll']);
 Route::get("/user/{id}", [UserController::class, 'get']);
@@ -71,7 +73,7 @@ Route::post("/user", [UserController::class, 'create']);
 
 
 Route::post('/login', [\App\Http\Controllers\Api\Auth\LoginController::class, 'login']);
-
+Route::post('/confirm', [\App\Http\Controllers\Api\Auth\LoginController::class, 'confirmAccount']);
 
 
 

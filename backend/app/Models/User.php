@@ -42,6 +42,11 @@ class User extends Model
         return $this -> hasMany('\App\Models\Order');
     }
 
+    public function shoppingCart()
+    {
+        return $this -> hasOne('\App\Models\ShoppingCart');
+    }
+
 
 
 

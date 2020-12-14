@@ -18,7 +18,9 @@ class UserAccount extends Authenticatable implements JWTSubject
         "lastname",
         "email",
         "password",
-        "api_token"
+        "api_token",
+        "confirmation_code",
+        "confirmed"
     ];
 
     protected $table = "user_account";

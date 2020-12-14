@@ -19,8 +19,10 @@ class CreateUserAccountsTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('lastname');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
+            $table->string('confirmation_code');
+            $table->boolean('confirmed')->default(false);
             $table->string("api_token", 80)->unique()
                 ->nullable()
                 ->default(null);

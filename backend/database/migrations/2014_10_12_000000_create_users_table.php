@@ -18,7 +18,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->bigIncrements('id');
             $table->softDeletes();
-
         });
     }
 

@@ -32,4 +32,11 @@ class StoreItem extends Model
         return $this->hasMany('App\Models\Picture');
     }
 
+    public function shopping_carts ()
+    {
+        return $this
+            ->belongsToMany('App\Models\ShoppingCart')
+            ->using('App\Models\ShoppingCartStoreItem');
+    }
+
 }

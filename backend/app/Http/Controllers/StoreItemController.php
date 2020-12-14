@@ -30,12 +30,26 @@ class StoreItemController extends Controller
 
     public function getAll (Request $request)
     {
-        return StoreItem::all();
+//        if (!$this->authUser()) {
+//            return response()->json(["error" => 'unauthorized'], 401);
+//        }
+
+        $storeItems = StoreItem::all();
+        $response = [];
+        foreach ($storeItems as $storeItem) {
+            $storeItemPictures = $storeItem -> pictures() -> get();
+            array_push($response, [
+                "storeItem"=>$storeItem,
+                "pictures" => $storeItemPictures
+            ]);
+        }
+
+        return $response;
     }
 
     public function get (Request$request)
     {
-
+        $this->authUser();
         $storeItem = StoreItem::find($request->route('id'));
 
         $storeItemPictures = [];

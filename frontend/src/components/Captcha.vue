@@ -15,12 +15,15 @@ export default {
   name: 'statusMessage',
   data () {
     return {
-      btndis: true
+      btndis: true,
+      captchaValid: false
     }
   },
   methods: {
     captchaOk () {
       console.log('captcha ok.!')
+      this.$emit("ok")
+      this.captchaValid = true;
     },
     captchaBtn () {
       this.btndis = false
