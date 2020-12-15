@@ -97,4 +97,40 @@ export default class ApiService {
                 })
         })
     }
+
+    createSelfOrder(orderData) {
+        return new Promise((resolve, reject) =>  {
+            axios.post(this.apiParameters.development + "user/self/order", orderData)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    getSelfOrders() {
+        return new Promise((resolve, reject) =>  {
+            axios.get(this.apiParameters.development + "user/self/order")
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    updateSelf(data) {
+        return new Promise((resolve, reject) => {
+            axios.put(this.apiParameters.development + "user/self", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
 }

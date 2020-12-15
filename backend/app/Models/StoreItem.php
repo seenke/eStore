@@ -24,7 +24,9 @@ class StoreItem extends Model
 
     public function orders ()
     {
-        return $this->belongsToMany('App\Models\Order');
+        return $this->belongsToMany('App\Models\Order')
+            ->using('\App\Models\OrderStoreItem')
+            ->withPivot(['quantity', 'primary_price']);
     }
 
     public function pictures ()

@@ -3,7 +3,7 @@
     <div id="nav">
       <ul>
         <router-link to="/prijava" v-if="!isLoggedIn"><li> PRIJAVA </li></router-link>
-        <li id="logout" @click="$store.dispatch('logout')" v-if="isLoggedIn"><a>ODJAVA</a></li>
+        <li id="logout" @click="logout" v-if="isLoggedIn"><a>ODJAVA</a></li>
         <router-link to="/trgovina"><li> TRGOVINA </li></router-link>
         <router-link to="/narocila" v-if="isLoggedIn"><li>NAROCILA</li></router-link>
         <router-link to="/"><li>DOMOV</li></router-link>
@@ -39,6 +39,12 @@ export default {
   computed: {
     isLoggedIn: function (){
       return this.$store.getters.isLoggedIn;
+    }
+  },
+  methods: {
+    "logout": function () {
+      this.$store.dispatch('logout');
+      this.$router.push("/")
     }
   }
 }

@@ -32,19 +32,13 @@ export default {
       console.log(err);
     })
 
-    this.$store.dispatch('getShoppingCart')
-    .then(()=> {
-      console.log(this.$store.getters.shoppingCartStatus + " status")
-    });
   }
 }
 </script>
 
 <style scoped>
 .storeItem{
-  margin-top: 2rem;
-  margin-left: 9rem;
-  margin-right:9rem ;
-  display: inline-block;
+  margin-top: 3rem;
+  margin-left:0rem;
 }
 </style>

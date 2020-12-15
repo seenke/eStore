@@ -71,7 +71,7 @@ export default {
 #storeItem{
   border: 1px solid white;
   border-radius: 13px;
-  width: 20rem;
+  width: 25rem;
 }
 #slider {
 }

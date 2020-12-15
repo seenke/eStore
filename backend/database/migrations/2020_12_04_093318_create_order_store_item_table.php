@@ -18,6 +18,9 @@ class CreateOrderStoreItemTable extends Migration
 
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('store_item_id');
+            $table->integer('quantity');
+            //Saving primary price in order to track orders whose storeItems price have been updated ...
+            $table->decimal('primary_price');
             $table->primary(['order_id', 'store_item_id']);
             $table->timestamps();
             $table->foreign('order_id')

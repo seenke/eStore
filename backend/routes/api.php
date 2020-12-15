@@ -58,6 +58,7 @@ Route::delete("/role/{id}", [RoleController::class, 'delete']);
 
 //USER
 Route::get("/user/self", [UserController::class, 'getSelf']);
+Route::put("/user/self", [UserController::class, 'selfUpdate']);
 Route::get("/user/self/order", [UserController::class, 'getSelfOrder']);
 Route::post("/user/self/order", [UserController::class, 'createSelfOrder']);
 Route::put("/user/self/shoppingCart", [UserController::class, 'selfUpdateShoppingCart']);

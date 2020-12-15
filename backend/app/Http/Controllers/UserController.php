@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ConfirmationMail;
 use App\Models\Adress;
 use App\Models\Order;
+use App\Models\OrderStoreItem;
 use App\Models\PostOffice;
 use App\Models\Role;
 use App\Models\ShoppingCart;
@@ -125,6 +126,48 @@ class UserController extends Controller
         return $storeItemModels;
     }
 
+    public function createSelfOrder (Request $request)
+    {
+        $userAccount = $this->authUser();
+        if ($userAccount == false) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        if (!$this->authorizeUser('customer')) {
+            return response()->json(['error' => 'Not allowed'],403);
+        }
+        $user = $userAccount->user()->get()[0];
+        $status = Status::where('status', 'neobdelano')->get();
+        if (count($status) == 0) {
+            $status = new Status();
+            $status->fill([
+                "status" => "neobdelano"
+            ]);
+            $status->save();
+        }
+
+        $order = new Order();
+
+        $order->user()->associate($user);
+        $order->status()->associate($status[0]);
+        $order->save();
+
+        $orderItems = $request->json('orderItems');
+        foreach ($orderItems as $orderItem)
+        {
+            $storeItemModel = StoreItem::find($orderItem['id']);
+            $orderItemModel = new OrderStoreItem();
+            $orderItemModel->fill([
+                "quantity" => $orderItem['quantity'],
+                "primary_price" => $orderItem['price']
+            ]);
+            $orderItemModel->storeItem()->associate($storeItemModel);
+            $orderItemModel->order()->associate($order);
+            $orderItemModel->save();
+        }
+
+        return $order->storeItems()->get();
+    }
+
     public function getAllOrders (Request $request)
     {
         $user = User::find($request->route('id'));
@@ -235,13 +278,19 @@ class UserController extends Controller
     {
         try {
             $userAccount = $this->authUser();
+            if ($userAccount == false) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            if (!$this->authorizeUser('customer')) {
+                return response()->json(['error' => 'Not allowed'],403);
+            }
             $user = $userAccount->user()->get()[0];
             $responseArr = ["orders" => []];
             foreach ($user->orders()->get() as $order) {
                 $orderArr = [
                     "storeItems" => $order -> storeItems() -> get(),
                     "order" => $order,
-                    "status" => $order -> status() -> get()
+                    "status" => $order -> status() -> get()[0]
                 ];
                 array_push($responseArr["orders"], $orderArr);
             }
@@ -253,8 +302,34 @@ class UserController extends Controller
         return response() -> json($responseArr, 200);
     }
 
-    public function createSelfOrder (Request $request)
+    public function selfUpdate (Request $request)
     {
+        try{
+            $userAccount = $this->authUser();
+            if ($userAccount == false) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            if ($request->json('email') !== null) {
+                response() -> json(['error' => 'email naslov ni posodobljiv', 400]);
+            }
+            if ($request->json('email') !== null) {
+                response() -> json(['error' => 'vloga ni posodobljiva', 400]);
+            }
+            if ($request->json('password') != null) {
+                $request['password'] = Hash::make($$request['password']);
+            }
+            $userAccount->update($request->all());
+            $userAccount->save();
+            return response()->json( $userAccount->only([
+                'name',
+                'lastname',
+                'role',
 
+            ]), 200);
+        }catch (QueryException $exception) {
+            return response()->json([
+                'error'=>$exception->getMessage()
+            ],500);
+        }
     }
 }

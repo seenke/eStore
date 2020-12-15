@@ -12,7 +12,8 @@ export default new Vuex.Store({
         shoppingCart: (localStorage.getItem('shoppingCart')) || {},
         fetchedCart: '',
         shoppingCartStatus: '',
-        test: ''
+        test: '',
+        orderStatus: ''
     },
     mutations: {
         auth_request(state){
@@ -47,6 +48,15 @@ export default new Vuex.Store({
         },
         emptyShoppingCart(state) {
             state.shoppingCart = JSON.stringify([]);
+        },
+        placeOrderError(state) {
+            state.orderStatus = 'oddaja narocila je spodletela';
+        },
+        placeOrderSuccess(state) {
+            state.orderStatus = 'oddaja narocila je uspesna - narocilo  v obdelavi';
+        },
+        updateSelf(state, newData) {
+            state.user = JSON.stringify(newData);
         }
     },
     actions: {
@@ -75,8 +85,8 @@ export default new Vuex.Store({
         logout({commit}) {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+            localStorage.removeItem('shoppingCart');
             commit('logout');
-            this.$router.push("/");
         },
         getShoppingCart({commit}) {
             let apiService = new ApiService(this.getters.authToken);
@@ -103,10 +113,12 @@ export default new Vuex.Store({
                     storeItem.pivot.quantity += newItem.quantity;
                     updateable = true;
                 }
-                requestData.shoppingCart.push({
-                    "id":storeItem.id,
-                    "quantity":storeItem.pivot.quantity
-                });
+                if (storeItem.pivot.quantity !== 0) {
+                    requestData.shoppingCart.push({
+                        "id":storeItem.id,
+                        "quantity":storeItem.pivot.quantity
+                    });
+                }
             })
             if (!updateable) {
                requestData.shoppingCart.push({
@@ -136,6 +148,36 @@ export default new Vuex.Store({
                 .catch((err) => {
                 console.log(err);
             })
+        },
+        placeOrder({commit}) {
+            return new Promise ((resolve,reject) => {
+
+                let apiService = new ApiService(this.getters.authToken);
+                const currentCart = JSON.parse(this.getters.shoppingCart);
+                let requestData = {
+                    "orderItems" : []
+                };
+                currentCart.forEach((cartItem) => {
+                    requestData.orderItems.push({
+                        "id": cartItem.id,
+                        "quantity": cartItem.pivot.quantity,
+                        "price": cartItem.price
+                    });
+                })
+                apiService.createSelfOrder(requestData)
+                    .then(()=>{
+                        commit('placeOrderSuccess');
+                        resolve();
+                    })
+                    .catch(()=> {
+                        commit('placeOrderError')
+                        reject();
+                    })
+            })
+        },
+        updateSelf({commit}, newData) {
+            localStorage.setItem("user", JSON.stringify(newData));
+            commit('updateSelf', newData);
         }
     },
     getters: {
@@ -145,7 +187,7 @@ export default new Vuex.Store({
         authToken: state => state.token,
         user: state => state.user,
         shoppingCart: state => state.shoppingCart,
-        shoppingCartStatus: state => state.shoppingCartStatus
-
+        shoppingCartStatus: state => state.shoppingCartStatus,
+        orderStatus: state => state.orderStatus
     }
 })

@@ -13,7 +13,9 @@ class Order extends Model
     protected $table = "order";
     public function storeItems ()
     {
-        return $this->belongsToMany('App\Models\StoreItem');
+        return $this->belongsToMany('App\Models\StoreItem')
+            ->using('\App\Models\OrderStoreItem')
+            ->withPivot(['quantity', 'primary_price']);
     }
 
     public function status ()
@@ -25,8 +27,6 @@ class Order extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
-
-
 
 
 }
