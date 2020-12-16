@@ -3,6 +3,6 @@
 ```shell
 $ cd backend
 $ php artisan DB:wipe
-$ php artisan migrate in order
+$ php artisan migrate_in_order
 $ php artisan serve
 ```
