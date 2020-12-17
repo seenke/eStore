@@ -133,4 +133,16 @@ export default class ApiService {
                 })
         })
     }
+
+    createSelfRating(data) {
+        return new Promise((resolve, reject) => {
+            axios.post(this.apiParameters.development + "user/self/rating", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
 }

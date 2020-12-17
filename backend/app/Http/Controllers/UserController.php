@@ -7,6 +7,7 @@ use App\Models\Adress;
 use App\Models\Order;
 use App\Models\OrderStoreItem;
 use App\Models\PostOffice;
+use App\Models\Rating;
 use App\Models\Role;
 use App\Models\ShoppingCart;
 use App\Models\ShoppingCartStoreItem;
@@ -327,6 +328,54 @@ class UserController extends Controller
 
             ]), 200);
         }catch (QueryException $exception) {
+            return response()->json([
+                'error'=>$exception->getMessage()
+            ],500);
+        }
+    }
+
+    public function selfAddRating(Request $request)
+    {
+        try{
+            $userAccount = $this->authUser();
+            if ($userAccount == false) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            $user = $userAccount->user()->get()[0];
+
+            $ratings = $user->ratings()->get();
+            if ($request['rating'] > 5 || $request['rating'] < 1) {
+                return esponse()->json([
+                    'error' => 'Ocena mora biti v razponu od 1-5'
+                ],400);
+            }
+            foreach ($ratings as $rating) {
+                if ($rating['store_item_id'] ==  $request['store_item_id']){
+                    return response()->json([
+                        'error' => 'Ta artikel ste ze ocenili'
+                    ],400);
+                }
+            }
+            $storeItem = StoreItem::find($request['store_item_id']);
+            if (count($storeItem->get()) == 0) {
+                return response()->json([
+                    'error' => 'Artikel s podanim identifikatorjem ne obstaja'
+                ], 400);
+            }
+
+            $rating = new Rating();
+            $rating->fill($request->all());
+            $rating->user()->associate($user);
+            $rating->storeItem()->associate($storeItem);
+
+            $rating->save();
+
+            return response()->json([
+                "message" => "Ocena uspesno oddana"
+            ],200);
+
+        }catch (QueryException $exception) {
+
             return response()->json([
                 'error'=>$exception->getMessage()
             ],500);

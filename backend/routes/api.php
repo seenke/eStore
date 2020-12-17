@@ -63,6 +63,7 @@ Route::get("/user/self/order", [UserController::class, 'getSelfOrder']);
 Route::post("/user/self/order", [UserController::class, 'createSelfOrder']);
 Route::put("/user/self/shoppingCart", [UserController::class, 'selfUpdateShoppingCart']);
 Route::get("/user/self/shoppingCart", [UserController::class, 'selfGetShoppingCart']);
+Route::post("/user/self/rating", [UserController::class, 'selfAddRating']);
 
 Route::get("/user", [UserController::class, 'getAll']);
 Route::get("/user/{id}", [UserController::class, 'get']);

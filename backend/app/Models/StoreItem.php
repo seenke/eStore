@@ -41,4 +41,9 @@ class StoreItem extends Model
             ->using('App\Models\ShoppingCartStoreItem');
     }
 
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\Rating');
+    }
+
 }

@@ -38,9 +38,11 @@ class StoreItemController extends Controller
         $response = [];
         foreach ($storeItems as $storeItem) {
             $storeItemPictures = $storeItem -> pictures() -> get();
+            $ratings = $storeItem -> ratings() -> get();
             array_push($response, [
                 "storeItem"=>$storeItem,
-                "pictures" => $storeItemPictures
+                "pictures" => $storeItemPictures,
+                "ratings" => $ratings
             ]);
         }
 

@@ -49,7 +49,8 @@ class MigrateInOrder extends Command
             '2020_12_03_214556_create_statuses_table.php',
             '2020_12_03_115840_create_orders_table.php',
             '2020_12_04_093318_create_order_store_item_table.php',
-            '2020_12_07_085437_create_pictures_table.php'
+            '2020_12_07_085437_create_pictures_table.php',
+            '2020_12_16_090329_create_ratings_table.php'
         ];
 
         foreach($migrations as $migration)

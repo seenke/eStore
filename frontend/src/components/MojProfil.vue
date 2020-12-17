@@ -21,9 +21,11 @@
 <script>
 import ApiService from "@/services/service";
 import Registration from "@/components/Registration";
-
+import 'vue-slider-component/theme/default.css'
 export default {
   name: "MojProfil",
+  components: {
+  },
   methods: {
     "updateAttribute": function (attributeName, newValue) {
       this.user[attributeName] = newValue;

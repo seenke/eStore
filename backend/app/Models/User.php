@@ -47,6 +47,11 @@ class User extends Model
         return $this -> hasOne('\App\Models\ShoppingCart');
     }
 
+    public function ratings()
+    {
+        return $this->hasMany('\App\Models\Rating');
+    }
+
 
 
 

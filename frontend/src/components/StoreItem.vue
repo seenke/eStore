@@ -20,21 +20,39 @@
       <h3>OPIS IZDELKA</h3>
       <p>{{storeItemData.storeItem.description}}</p>
   </div>
+    <div class="info_item">
+      <h3>OCENA IZDELKA:</h3>
+      <p>{{calculateRating(storeItemData)}}</p>
+    </div>
+
+    <h3 class="heading">OCENITE IZDELEK: </h3>
+    <div class="info_item rating">
+      <vue-slider
+          :data="ratingRange"
+          :marks="true"
+          v-model="rating">
+      </vue-slider>
+    </div>
+    <button style="margin-top: 2rem;margin-left: 7.5rem" @click="addRating"> ODDAJ OCENO</button>
 </div>
 </div>
 </template>
 
 <script>
 import {Slider, SliderItem} from "vue-easy-slider";
-
+import VueSlider from "vue-slider-component";
+import ApiService from "@/services/service";
 export default {
   components: {
     Slider,
-    SliderItem
+    SliderItem,
+    VueSlider
   },
   name: "StoreItem",
   data: function (){
     return {
+      "rating": 5,
+      "ratingRange" : [1, 2, 3, 4, 5]
     }
   },
   props: ['storeItemData'],
@@ -42,9 +60,16 @@ export default {
     test() {
       console.log(this.storeItemData);
     },
-    // registerEvent() {
-    //   console.log("Added to cart item with id: " + this.storeItemData.storeItem.id)
-    // },
+    calculateRating(storeItemData) {
+      let sum = 0;
+      storeItemData.ratings.forEach((rating) => {
+        sum += rating.rating;
+      })
+      if (sum === 0) {
+        return "Izdelek nima ocene - bodite prvi in oddajte svojo oceno"
+      }
+      return  sum/storeItemData.ratings.length;
+    },
     generateLink(picture) {
       return 'http://127.0.0.1:8001/storage/storeItems/' + picture + ".png";
     },
@@ -54,11 +79,27 @@ export default {
         "quantity": 1
       }
       this.$store.dispatch('updateShoppingCart', obj);
+    },
+    addRating() {
+      const apiService = new ApiService(this.$store.getters.authToken);
+      apiService.createSelfRating({
+        "rating": this.rating,
+        "store_item_id": this.storeItemData.storeItem.id
+      })
+      .then(() =>  {
+        this.$alert("Ocena uspesno oddana",'Ocena', 'info');
+        this.$forceUpdate();
+      })
+      .catch((err) => {
+        console.log(err)
+        this.$alert(err.response.data.error, 'Ocena', 'error');
+      })
     }
   },
   beforeMount() {
     console.log(this.storeItemData.storeItem.id)
     console.log(this.storeItemData.pictureData)
+
   }
 
 }
@@ -72,12 +113,13 @@ export default {
   border: 1px solid white;
   border-radius: 13px;
   width: 25rem;
+  height: 48rem;
 }
 #slider {
 }
 button {
   width: 40%;
-  margin: 1rem 6rem;
+  margin: 1rem 8rem;
   padding: 0.5rem 0rem;
   background: #6cb33e;
   border: none;
@@ -92,7 +134,10 @@ button {
   text-align: center;
 }
 .info_item{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .info_item h3 {
   color: #6cb33e;
@@ -100,6 +145,16 @@ button {
 }
 #slider_item {
 
+}
+
+.rating {
+  width: 7rem;
+  margin: auto;
+}
+
+.heading {
+  margin-bottom: 1rem;
+  color: #6cb33e;
 }
 
 
