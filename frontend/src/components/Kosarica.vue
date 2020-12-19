@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <h1>Kosarica</h1>
+    <div  v-if="this.$store.getters.shoppingCart !== '[]' ">
     <kosarica-item
         v-for="shoppingCartItem in JSON.parse(this.$store.getters.shoppingCart)"
         :shopping-cart-item=shoppingCartItem
         :key="shoppingCartItem.id">
 
     </kosarica-item>
+    </div>
     <br>
     <button v-on:click="this.emptyShoppingCart" class="buttonClear">IZPRAZNI KOSARICO</button>
     <h2>SKUPNA CENA: <mark class="green">{{calculateTotal()}}€</mark></h2>
     <br>
-    <button @click="checkout" class="buttonCheckout">CHECKOUT</button>
+    <button @click="checkout" class="buttonCheckout" v-if="(this.$store.getters.shoppingCart) !== '[]' ">CHECKOUT</button>
+    {{this.$store.getters.shoppingCart}}
   </div>
 </template>
 
@@ -35,6 +38,9 @@ export default {
     },
     calculateTotal() {
       let totalPrice = 0;
+      if (this.$store.getters.shoppingCart === '') {
+        return 0;
+      }
       JSON.parse(this.$store.getters.shoppingCart).forEach((shoppingCartItem)=> {
         totalPrice += shoppingCartItem.price * shoppingCartItem.pivot.quantity;
       })

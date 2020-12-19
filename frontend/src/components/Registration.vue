@@ -73,7 +73,8 @@ export default {
           "name": '',
           "lastname": '',
           "email": '',
-          "password": ''
+          "password": '',
+          "role": "customer"
         },
         "addressData" : {
           "street" : '',
@@ -109,6 +110,7 @@ export default {
           this.cleanData()
         })
         .catch((err) => {
+          console.log(err.response)
           this.$alert("Registracija spodletela: " + err, "Registracija", 'error');
         })
       }

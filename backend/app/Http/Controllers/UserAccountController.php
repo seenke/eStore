@@ -63,9 +63,9 @@ class UserAccountController extends Controller
         ]);
         $address->save();
 
-        $postOffice = PostOffice::where('post_office', $request['postOffice']['post_office'])->get()[0];
+        $postOffice = PostOffice::where('post_office', $request['postOffice']['post_office'])->get();
 
-        if($postOffice == null) {
+        if(count($postOffice) == 0) {
             $postOffice = new PostOffice();
             $postOffice->fill([
                 "post_office" => $request['postOffice']['post_office'],
