@@ -8,8 +8,8 @@ export default new Vuex.Store({
     state: {
         status: '',
         token: localStorage.getItem('token') || '',
-        user: localStorage.getItem('user') || {},
-        shoppingCart: (localStorage.getItem('shoppingCart')) || {},
+        user: localStorage.getItem('user') || '',
+        shoppingCart: (localStorage.getItem('shoppingCart')) || '',
         fetchedCart: '',
         shoppingCartStatus: '',
         test: '',
@@ -19,11 +19,10 @@ export default new Vuex.Store({
         auth_request(state){
             state.status = 'loading'
         },
-        auth_success(state, token, user){
+        auth_success(state, payload){
             state.status = 'success'
-            state.token = token
-            console.log(user);
-            state.user = JSON.stringify(user)
+            state.token = payload.token
+            state.user = JSON.stringify(payload.user)
         },
         auth_error(state){
             state.status = 'error'
@@ -31,6 +30,8 @@ export default new Vuex.Store({
         logout(state){
             state.status = ''
             state.token = ''
+            state.user = ''
+            state.shoppingCart = ''
         },
         setShoppingCartSuccess (state, shoppingCart){
             state.shoppingCart = JSON.stringify(shoppingCart);
@@ -68,10 +69,15 @@ export default new Vuex.Store({
                         console.log(data)
                         const token = data.token
                         const user = data.user
+                        console.log(token, user, "ACTION LOGIN")
                         localStorage.setItem('token', token);
                         localStorage.setItem('user', JSON.stringify(user));
                         axios.defaults.headers.common['Authorization'] = token
-                        commit('auth_success', token, user)
+                        const paylod = {
+                            'token': token,
+                            'user': user
+                        };
+                        commit('auth_success', paylod)
                         resolve(data)
                     })
                     .catch((err)=> {
@@ -183,11 +189,21 @@ export default new Vuex.Store({
     getters: {
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status,
-        userRole: state => state.user.role,
+        userRole: (state) => {
+            console.log(state.user + " STATE USER")
+            if (state.user === {} || state.user === '' || state.user === undefined) {
+                return 'anonymous';
+            }
+            else {
+                return JSON.parse(state.user).role
+            }
+
+        }
+        ,
         authToken: state => state.token,
         user: state => state.user,
         shoppingCart: state => state.shoppingCart,
         shoppingCartStatus: state => state.shoppingCartStatus,
-        orderStatus: state => state.orderStatus
+        orderStatus: state => state.orderStatus,
     }
 })

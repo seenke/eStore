@@ -7,9 +7,11 @@
         :key="shoppingCartItem.id">
 
     </kosarica-item>
-    <button v-on:click="this.emptyShoppingCart">IZPRAZNI KOSARICO</button>
-    <h2>SKUPNA CENA: {{calculateTotal()}}</h2>
-    <button @click="checkout">CHECKOUT</button>
+    <br>
+    <button v-on:click="this.emptyShoppingCart" class="buttonClear">IZPRAZNI KOSARICO</button>
+    <h2>SKUPNA CENA: <mark class="green">{{calculateTotal()}}€</mark></h2>
+    <br>
+    <button @click="checkout" class="buttonCheckout">CHECKOUT</button>
   </div>
 </template>
 
@@ -25,11 +27,11 @@ export default {
     emptyShoppingCart() {
       this.$confirm("Ste prepricani da zelite izprazniti kosarico ? Vrnitev na predhodno stanje ne bo mogoca")
           .then(() => {
-        this.$store.dispatch('emptyShoppingCart');
-      })
-      .catch(() => {
-        return null;
-      })
+            this.$store.dispatch('emptyShoppingCart');
+          })
+          .catch(() => {
+            return null;
+          })
     },
     calculateTotal() {
       let totalPrice = 0;
@@ -40,16 +42,16 @@ export default {
     },
     checkout() {
       this.$confirm("Ste prepircani da zeliste oddati narocilo v obdelavo ?")
-        .then(()=> {
-          this.$store.dispatch('placeOrder')
-              .then(()=> {
-                this.$alert(this.$store.getters.orderStatus, 'Narocilo', 'info');
-                this.$store.dispatch('emptyShoppingCart');
-              })
-              .catch(()=> {
-                console.log('Prislo je do napake');
-              })
-        })
+          .then(()=> {
+            this.$store.dispatch('placeOrder')
+                .then(()=> {
+                  this.$alert(this.$store.getters.orderStatus, 'Narocilo', 'info');
+                  this.$store.dispatch('emptyShoppingCart');
+                })
+                .catch(()=> {
+                  console.log('Prislo je do napake');
+                })
+          })
     }
   },
   beforeMount() {
@@ -62,14 +64,63 @@ export default {
 </script>
 
 <style scoped>
-  p {
-    color: white;
-  }
-  #app {
-    text-align: center;
-  }
-  h2{
-    margin-top:1rem;
-    color: white;
-  }
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+p {
+  color: white;
+}
+#app {
+  text-align: center;
+}
+h2 {
+  margin-top:1rem;
+  color: white;
+}
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  transition: all 0.5s ease-out;
+  text-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+  color: #6cb33e;
+}
+
+.buttonClear {
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #BD0000;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bolder;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+mark.green {
+  color:#6cb33e;
+  background: none;
+}
+
+.buttonCheckout {
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #6cb33e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bolder;
+  margin-bottom: 100px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
 </style>

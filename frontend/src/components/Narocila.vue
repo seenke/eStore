@@ -6,39 +6,41 @@
            class="neobdelano narocilo"
            :key="narocilo.id">
         <ul>
-          <h2>NAROCILO - {{narocilo.order.id}}</h2>
-          <li v-for="storeItem in narocilo.storeItems" :key="storeItem.id">
-            {{storeItem.name}} - {{storeItem.pivot.quantity}}  x {{storeItem.pivot.primary_price}}
-          </li>
-          <h3>ODDANO: {{narocilo.order.created_at}} </h3>
+          <Narocilo :narocilo="narocilo"  v-on:statusUpdate="getOrders"> </Narocilo>
         </ul>
       </div>
     </div>
 
     <div id="potrjeno" class="narocilaContainer">
-      <h1>POTRJENA</h1>
+      <h1 class="narocilaContainer_header">POTRJENA</h1>
       <div v-for="narocilo in ordersByStatus.potrjeno"
-           class="potrjeno"
+           class="potrjeno narocilo"
            :key="narocilo.id">
-
+        <ul>
+          <Narocilo :narocilo="narocilo" v-on:statusUpdate="getOrders"> </Narocilo>
+        </ul>
       </div>
     </div>
 
     <div id="preklicano" class="narocilaContainer">
-      <h1>PREKLICANA</h1>
+      <h1 class="narocilaContainer_header">PREKLICANA</h1>
       <div v-for="narocilo in ordersByStatus.preklicano"
-           class="preklicano"
+           class="preklicano narocilo"
            :key="narocilo.id">
-
+        <ul>
+          <Narocilo :narocilo="narocilo"  v-on:statusUpdate="getOrders"> </Narocilo>
+        </ul>
       </div>
     </div>
 
     <div id="stornirano" class="narocilaContainer">
-      <h1>STORNIRANA</h1>
+      <h1 class="narocilaContainer_header">STORNIRANA</h1>
       <div v-for="narocilo in ordersByStatus.stornirano"
-           class="stornirano"
+           class="stornirano narocilo"
            :key="narocilo.id">
-
+        <ul>
+          <Narocilo :narocilo="narocilo"  v-on:statusUpdate="getOrders"> </Narocilo>
+        </ul>
       </div>
     </div>
 
@@ -47,9 +49,12 @@
 
 <script>
 import ApiService from "@/services/service";
-
+import Narocilo from "@/components/Narocilo";
 export default {
   name: "Narocila",
+  components:{
+    Narocilo
+  },
   data:function (){
     return {
       "orders": [],
@@ -64,7 +69,15 @@ export default {
   methods: {
     "getOrders": function () {
       const apiService = new ApiService(this.$store.getters.authToken);
-      apiService.getSelfOrders()
+      let promise;
+      console.log("getting new orders");
+      if (JSON.parse(this.$store.getters.user).role === 'Seller') {
+        promise = apiService.getOrders()
+      }
+      else {
+        promise = apiService.getSelfOrders();
+      }
+        promise
         .then((orders) => {
           this.orders = orders;
           this.sortOrders();
@@ -77,6 +90,12 @@ export default {
     "sortOrders": function () {
       const orders = this.orders.orders;
       console.log(orders)
+      this.ordersByStatus = {
+        "neobdelano": [],
+        "potrjeno": [],
+        "preklicano": [],
+        "stornirano": []
+      }
       orders.forEach((order) => {
         console.log(order.status.status);
         if (order.status.status === 'neobdelano') {
@@ -103,6 +122,7 @@ export default {
 
 <style scoped>
   .narocilaContainer{
+    height: 100%;
     display: inline-block;
     margin-left: 1.5rem;
   }

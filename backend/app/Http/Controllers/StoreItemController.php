@@ -15,8 +15,7 @@ class StoreItemController extends Controller
 
         $picturesModel = [];
         foreach ($pictureData as $picture) {
-            $pictureModel = new Picture();
-            $pictureModel->fill($picture);
+            $pictureModel = Picture::where('id', $picture['id'])->get()[0];
             array_push($picturesModel, $pictureModel);
         };
 
@@ -30,9 +29,6 @@ class StoreItemController extends Controller
 
     public function getAll (Request $request)
     {
-//        if (!$this->authUser()) {
-//            return response()->json(["error" => 'unauthorized'], 401);
-//        }
 
         $storeItems = StoreItem::all();
         $response = [];
@@ -54,20 +50,48 @@ class StoreItemController extends Controller
         $this->authUser();
         $storeItem = StoreItem::find($request->route('id'));
 
-        $storeItemPictures = [];
-        foreach ($storeItem->pictures()->get() as $picture) {
-            array_push($storeItemPictures, $picture);
-        }
-
-        return [$storeItem, $storeItemPictures];
+        return [
+            "storeItem" =>$storeItem,
+            "pictures" => $storeItem->pictures()->get(),
+            "ratings" => $storeItem->ratings() -> get()
+        ];
     }
 
     public function update (Request $request)
     {
-        $storeItem = StoreItem::where('id', $request->json('id'))
-            -> update($request->all());
 
-        return $request->all();
+        $storeItemData = $request->json('storeItemData');
+        $pictureData = $request->json('pictureData');
+
+        $storeItem = StoreItem::where('id', $storeItemData['id'])->get()[0];
+
+        $picturesModel = [];
+        foreach ($pictureData as $picture) {
+            $pictureModel = Picture::where('id', $picture['id'])->get()[0];
+            array_push($picturesModel, $pictureModel);
+        };
+
+        $storeItem->update([
+            "name" => $storeItemData['name'],
+            "price" => $storeItemData['price'],
+            "description" => $storeItemData['description']
+        ]);
+
+        $pictureIds = array_map(function ($value){
+            return $value['id'];
+        }, $picturesModel);
+
+        $pictures = $storeItem->pictures()->get();
+        foreach ($pictures as $picture) {
+            if (!in_array($picture['id'], $pictureIds )) {
+                $picture->delete();
+            }
+        }
+
+        $storeItem->pictures()->saveMany($picturesModel);
+        $storeItem->save();
+
+        return $storeItem;
 
     }
 
@@ -78,5 +102,13 @@ class StoreItemController extends Controller
         $storeItem->delete();
 
         return $storeItem->get();
+    }
+
+    public function deleteAll (Request $request)
+    {
+        StoreItem::whereNotNull('id')->delete();
+        return [
+            "message"=>"all deleted"
+        ];
     }
 }

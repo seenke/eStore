@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <ul>
+      <ul v-if="$store.getters.userRole !== 'Seller'">
         <router-link to="/prijava" v-if="!isLoggedIn"><li> PRIJAVA </li></router-link>
         <li id="logout" @click="logout" v-if="isLoggedIn"><a>ODJAVA</a></li>
         <router-link to="/trgovina"><li> TRGOVINA </li></router-link>
@@ -9,6 +9,15 @@
         <router-link to="/"><li>DOMOV</li></router-link>
         <router-link to="/mojProfil" v-if="isLoggedIn"><li>MOJ PROFIL</li></router-link>
         <router-link to="/kosarica" v-if="isLoggedIn"><li>KOSARICA</li></router-link>
+      </ul>
+
+      <ul v-if="$store.getters.userRole === 'Seller'">
+        <li @click="logout" v-if="isLoggedIn"><a>ODJAVA</a></li>
+        <router-link to="/narocila"><li>NAROCILA</li></router-link>
+        <router-link to="/trgovina"><li>TRGOVINA</li></router-link>
+        <router-link to="/dodajIzdelek"><li>DODAJ IZDELEK</li></router-link>
+        <router-link to="/mojProfil"><li>MOJ PROFIL</li></router-link>
+        <router-link to="/stranke"><li>STRANKE</li></router-link>
       </ul>
     </div>
 

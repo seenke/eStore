@@ -1,41 +1,47 @@
 <template>
-<div id="storeItem">
-  <slider animation="fade" id="slider">
-    <slider-item id="slider_item"
-                 v-for="(picture, index) in storeItemData.pictures"
-                 :key="index">
-    <img :src="generateLink(picture.image)" style="width: 400px; height: 300px">
-    </slider-item>
-  </slider>
-  <button @click="addToCart">ADD TO CART</button>
-  <div class="info">
-    <div class="info_item">
-      <h2>{{storeItemData.storeItem.name}}</h2>
+  <div id="storeItem" class="itemForSale">
+    <slider animation="fade" id="slider">
+      <slider-item id="slider_item"
+                   v-for="(picture, index) in storeItemData.pictures"
+                   :key="index">
+        <img :src="generateLink(picture.image)" style=" width: 450px; height: 300px" class="mainpic">
+      </slider-item>
+    </slider>
+    <div class="horizontal-center">
+      <button @click="addToCart" v-if="$store.getters.userRole === 'customer' ">ADD TO CART</button>
     </div>
-    <div class="info_item">
-      <h3>CENA</h3>
-      <p>{{storeItemData.storeItem.price}} $</p>
-    </div>
-    <div class="info_item">
-      <h3>OPIS IZDELKA</h3>
-      <p>{{storeItemData.storeItem.description}}</p>
-  </div>
-    <div class="info_item">
-      <h3>OCENA IZDELKA:</h3>
-      <p>{{calculateRating(storeItemData)}}</p>
-    </div>
+    <div class="info">
+      <div class="info_item">
+        <h2>{{storeItemData.storeItem.name}}</h2>
+      </div>
+      <div class="info_item">
+        <h3>CENA</h3>
+        <p>{{storeItemData.storeItem.price}} $</p>
+      </div>
+      <div class="info_item">
+        <h3>OPIS IZDELKA</h3>
+        <p>{{storeItemData.storeItem.description}}</p>
+      </div>
+      <div class="info_item">
+        <h3>OCENA IZDELKA:</h3>
+        <p>{{calculateRating(storeItemData)}}</p>
+      </div>
 
-    <h3 class="heading">OCENITE IZDELEK: </h3>
-    <div class="info_item rating">
-      <vue-slider
-          :data="ratingRange"
-          :marks="true"
-          v-model="rating">
-      </vue-slider>
+      <h3 class="heading" v-if="$store.getters.userRole === 'customer' ">OCENITE IZDELEK: </h3>
+      <div class="info_item rating" v-if="$store.getters.userRole === 'customer' ">
+        <vue-slider
+            :data="ratingRange"
+            :marks="true"
+            v-model="rating">
+        </vue-slider>
+      </div>
+      <button style="margin-top: 2rem;" class="horizontal-center" @click="addRating" v-if="$store.getters.userRole === 'customer' "> ODDAJ OCENO</button>
+      <router-link :to='generateRouteLink()'>
+        <button style="margin-top: 5rem;padding: 1rem" class="horizontal-center" v-if="$store.getters.userRole === 'Seller' ">UREDI ARTIKEL</button>
+      </router-link>
+
     </div>
-    <button style="margin-top: 2rem;margin-left: 7.5rem" @click="addRating"> ODDAJ OCENO</button>
-</div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -71,7 +77,8 @@ export default {
       return  sum/storeItemData.ratings.length;
     },
     generateLink(picture) {
-      return 'http://127.0.0.1:8001/storage/storeItems/' + picture + ".png";
+      console.log(picture)
+      return 'http://127.0.0.1:8000/storage/storeItems/' + picture;
     },
     addToCart() {
       const obj = {
@@ -86,14 +93,17 @@ export default {
         "rating": this.rating,
         "store_item_id": this.storeItemData.storeItem.id
       })
-      .then(() =>  {
-        this.$alert("Ocena uspesno oddana",'Ocena', 'info');
-        this.$forceUpdate();
-      })
-      .catch((err) => {
-        console.log(err)
-        this.$alert(err.response.data.error, 'Ocena', 'error');
-      })
+          .then(() =>  {
+            this.$alert("Ocena uspesno oddana",'Ocena', 'info');
+            this.$forceUpdate();
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$alert(err.response.data.error, 'Ocena', 'error');
+          })
+    },
+    generateRouteLink() {
+      return "/uredi/" + this.storeItemData.storeItem.id;
     }
   },
   beforeMount() {
@@ -106,45 +116,60 @@ export default {
 </script>
 
 <style scoped>
-#slider {
-  border-bottom: 1px solid white;
+.mainpic {
+  border-radius: 30px;
+  transform: scale(0.9);
 }
-#storeItem{
-  border: 1px solid white;
-  border-radius: 13px;
-  width: 25rem;
-  height: 48rem;
+
+.horizontal-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-#slider {
+
+.itemForSale{
+  border-radius: 25px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  width: 450px;
+  height: 770px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1), 0px 0px 50px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease-out;
 }
+
 button {
-  width: 40%;
-  margin: 1rem 8rem;
-  padding: 0.5rem 0rem;
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
   background: #6cb33e;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 30px;
   font-weight: bolder;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
-}
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);}
+
 .info{
   color: white;
   text-align: center;
 }
+
 .info_item{
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
 .info_item h3 {
   color: #6cb33e;
   margin-bottom: 0.5rem;
-}
-#slider_item {
-
 }
 
 .rating {
@@ -156,6 +181,4 @@ button {
   margin-bottom: 1rem;
   color: #6cb33e;
 }
-
-
 </style>

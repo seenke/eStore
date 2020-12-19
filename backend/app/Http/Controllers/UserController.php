@@ -33,12 +33,18 @@ class UserController extends Controller
             $addressData = $request->json('addressData');
             $postOfficeData = $request -> json('postOfficeData');
 
-            $role = Role::where('role', 'customer')->get();
+            //IMPORTANT ADD AUTHORIZATION FOR ADMIN --> ONLY ADMIN CAN PERFORM USER CREATING WITH SPECIFYING ROLES!
+            if($accountData['role'] !== null) {
+                $role = Role::where('role', $accountData['role'])->get();
+            }else {
+                $role = Role::where('role', 'customer')->get();
+            }
 
             if (count($role) == 0) {
                 $role = new Role();
+                $roleName = $accountData['role'] != null ? $accountData['role'] : 'customer';
                 $role->fill([
-                    "role" => "customer"
+                    "role" => $roleName
                 ]);
                 $role->save();
             }else {
@@ -167,19 +173,6 @@ class UserController extends Controller
         }
 
         return $order->storeItems()->get();
-    }
-
-    public function getAllOrders (Request $request)
-    {
-        $user = User::find($request->route('id'));
-
-        $orderResponse = [];
-        foreach ($user->orders()->get() as $order)
-        {
-            array_push($orderResponse, $order, $order->storeItems()->get(), $order->status()->get());
-        }
-
-        return $orderResponse;
     }
 
     public function getAll (Request $request)
@@ -321,6 +314,7 @@ class UserController extends Controller
             }
             $userAccount->update($request->all());
             $userAccount->save();
+            $userAccount['role'] = $userAccount['role']['role'];
             return response()->json( $userAccount->only([
                 'name',
                 'lastname',

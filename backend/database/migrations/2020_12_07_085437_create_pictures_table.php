@@ -17,7 +17,7 @@ class CreatePicturesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('image');
-            $table->unsignedBigInteger("store_item_id");
+            $table->unsignedBigInteger("store_item_id")->nullable();
             $table->foreign('store_item_id')
                 ->references('id')
                 ->on('store_item');

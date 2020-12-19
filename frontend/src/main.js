@@ -15,6 +15,9 @@ import Trgovina from "@/components/Trgovina";
 import Kosarica from "@/components/Kosarica";
 import Narocila from "@/components/Narocila";
 import MojProfil from "@/components/MojProfil";
+import Stranke from "@/components/Stranke";
+import StoreItemCreator from "@/components/StoreItemCreator";
+import StoreItemEditor from "@/components/StoreItemEditor";
 
 
 Vue.use(VueSimpleAlert);
@@ -31,7 +34,10 @@ const routes = [
   {path: "/trgovina", component: Trgovina},
   {path: "/kosarica", component: Kosarica},
   {path: "/narocila", component: Narocila},
-  {path: "/mojProfil", component: MojProfil}
+  {path: "/mojProfil", component: MojProfil},
+  {path: "/stranke", component: Stranke},
+  {path: "/dodajIzdelek", component:StoreItemCreator},
+  {path: "/uredi/:id", component: StoreItemEditor}
 ]
 
 const router = new VueRouter({

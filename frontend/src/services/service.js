@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default class ApiService {
     apiParameters = {
-        "development": "http://127.0.0.1:8001/api/",
+        "development": "http://127.0.0.1:8000/api/",
         "production" : "TODO"
     }
 
@@ -137,6 +137,126 @@ export default class ApiService {
     createSelfRating(data) {
         return new Promise((resolve, reject) => {
             axios.post(this.apiParameters.development + "user/self/rating", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    getOrders() {
+        return new Promise((resolve, reject) =>  {
+            axios.get(this.apiParameters.development + "order")
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    updateOrder(data) {
+        return new Promise((resolve, reject) =>  {
+            axios.put(this.apiParameters.development + "order", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    getAllUserAccounts () {
+        return new Promise((resolve, reject) =>  {
+            axios.get(this.apiParameters.development + "userAccount")
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    updateUserAccount (data) {
+        return new Promise((resolve, reject) =>  {
+            axios.put(this.apiParameters.development + "userAccount", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    deleteUserAccount (id) {
+        return new Promise((resolve, reject) =>  {
+            axios.delete(this.apiParameters.development + "userAccount/" + id)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    restoreUserAccount (id) {
+        return new Promise((resolve, reject) =>  {
+            axios.get(this.apiParameters.development + "userAccount/restore/" + id)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    uploadPicture (data) {
+        return new Promise((resolve, reject) =>  {
+            axios.post(this.apiParameters.development + "picture", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    createStoreItem (data) {
+        return new Promise((resolve, reject) =>  {
+            axios.post(this.apiParameters.development + "storeItem", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    getStoreItem (id) {
+        return new Promise((resolve, reject) =>  {
+            axios.get(this.apiParameters.development + "storeItem/"+id)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    updateStoreItem (data) {
+        return new Promise((resolve, reject) =>  {
+            axios.put(this.apiParameters.development + "storeItem/", data)
                 .then((response) => {
                     resolve(response.data);
                 })

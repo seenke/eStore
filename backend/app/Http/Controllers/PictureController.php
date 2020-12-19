@@ -7,79 +7,29 @@ use Illuminate\Http\Request;
 
 class PictureController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+
+    public function create (Request $request) {
+//        if(!$request->hasFile('image')) {
+//            return response()->json(['upload_file_not_found'], 400);
+//        }
+        $file = $request->file('image');
+//        if(!$file->isValid()) {
+//            return response()->json(['invalid_file_upload'], 400);
+//        }∂
+        $path = public_path() . '/storage/storeItems';
+        $image = new Picture();
+        $image->fill([
+            "image" => $file->getClientOriginalName(),
+        ]);
+        $image->save();
+        $image['image'] = strval($image['id'])."ID-".$image['image'];
+        $image->save();
+        $file->move($path, $image['image']);
+
+        return response()->json($image);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Picture  $picture
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Picture $picture)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Picture  $picture
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Picture $picture)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Picture  $picture
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Picture $picture)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Picture  $picture
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Picture $picture)
-    {
-        //
+    public function getAll (Request $request) {
+        return Picture::all();
     }
 }

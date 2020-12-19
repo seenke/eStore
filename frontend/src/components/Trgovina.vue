@@ -26,6 +26,7 @@ export default {
     console.log("Sending request with token: " + this.$store.getters.authToken)
     apiService.getStoreItems()
     .then((response) => {
+      console.log(response)
       this.storeItems = response
     })
     .catch((err) => {
