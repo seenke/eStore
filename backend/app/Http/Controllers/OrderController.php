@@ -17,18 +17,28 @@ class OrderController extends Controller
         {
             //TODO: authorize to only ADMIN and SELLER
 
+            $user =  $order -> user() -> get()[0];
+            $userAccount = $user->userAccount()->get();
+            if (count($userAccount)== 0) {
+                $userData = [
+                    "id" => "UPORABNIK IZBRISAN",
+                    "name" => "UPORABNIK IZBRISAN",
+                    "lastname" =>"UPORABNIK IZBRISAN",
+                    "email" => "UPORABNIK IZBRISAN"
+                ];
+            }else {
+                $userData = $userAccount[0]->only([
+                        'id',
+                        'name',
+                        'lastname',
+                        'email'
+                ]);
+            }
             $orderArr = [
                 "storeItems" => $order -> storeItems() -> get(),
                 "order" => $order,
                 "status" => $order -> status() -> get()[0],
-                "user" => $order -> user() -> get() ->first()
-                    -> userAccount()->get() -> first()
-                ->only([
-                    'id',
-                    'name',
-                    'lastname',
-                    'email'
-                ])
+                "user" => $userData
             ];
             array_push($responseArr["orders"], $orderArr);
         }

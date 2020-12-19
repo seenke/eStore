@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <ul v-if="$store.getters.userRole !== 'Seller'">
+      <ul v-if="$store.getters.userRole === 'customer' || $store.getters.userRole === 'anonymous'">
         <router-link to="/prijava" v-if="!isLoggedIn"><li> PRIJAVA </li></router-link>
         <li id="logout" @click="logout" v-if="isLoggedIn"><a>ODJAVA</a></li>
         <router-link to="/trgovina"><li> TRGOVINA </li></router-link>
@@ -18,6 +18,11 @@
         <router-link to="/dodajIzdelek"><li>DODAJ IZDELEK</li></router-link>
         <router-link to="/mojProfil"><li>MOJ PROFIL</li></router-link>
         <router-link to="/stranke"><li>STRANKE</li></router-link>
+      </ul>
+      <ul v-if="$store.getters.userRole === 'admin'">
+        <li @click="logout" v-if="isLoggedIn"><a>ODJAVA</a></li>
+        <router-link to="/mojProfil"><li>MOJ PROFIL</li></router-link>
+        <router-link to="/zaposleni"><li>ZAPOSLENI</li></router-link>
       </ul>
     </div>
 

@@ -83,7 +83,7 @@ export default {
           this.sortOrders();
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response);
           this.$alert('Napaka pri pridobivanju narocil', 'Narocila', 'error');
         })
     },

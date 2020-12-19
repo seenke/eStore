@@ -265,4 +265,16 @@ export default class ApiService {
                 })
         })
     }
+
+    creatUserAccount (data) {
+        return new Promise((resolve, reject) =>  {
+            axios.post(this.apiParameters.development + "userAccount", data)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
 }

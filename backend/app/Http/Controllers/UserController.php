@@ -67,7 +67,20 @@ class UserController extends Controller
             $userAccount->role()->associate($role);
 
             //Matching user with address, postOffice and account
-            $postOffice = PostOffice::find($postOfficeData['id']);
+            if (array_key_exists('post_office',$postOfficeData)) {
+                $potentialPostOffice = PostOffice::where("post_office", $postOfficeData['post_office'])->get();
+                if (count($potentialPostOffice) == 0) {
+                    $postOffice = new PostOffice();
+                    $postOffice->fill($postOfficeData);
+                    $postOffice->save();
+                }
+                else {
+                    $postOffice = $potentialPostOffice[0];
+                }
+            }else {
+                $postOffice = PostOffice::find($postOfficeData['id']);
+            }
+
             $userAccount->belongsTo($user);
             $user->userAccount()->save($userAccount);
 

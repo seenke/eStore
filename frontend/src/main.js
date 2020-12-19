@@ -18,13 +18,16 @@ import MojProfil from "@/components/MojProfil";
 import Stranke from "@/components/Stranke";
 import StoreItemCreator from "@/components/StoreItemCreator";
 import StoreItemEditor from "@/components/StoreItemEditor";
-
+import VModal from 'vue-js-modal';
+import Zaposleni from "@/components/Zaposleni";
 
 Vue.use(VueSimpleAlert);
 Vue.use(myCaptcha);
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(EasySlider)
+Vue.use(VModal,{ dynamicDefault: { draggable: true, resizable: true } })
+
 
 
 const routes = [
@@ -37,7 +40,8 @@ const routes = [
   {path: "/mojProfil", component: MojProfil},
   {path: "/stranke", component: Stranke},
   {path: "/dodajIzdelek", component:StoreItemCreator},
-  {path: "/uredi/:id", component: StoreItemEditor}
+  {path: "/uredi/:id", component: StoreItemEditor},
+  {path: "/zaposleni", component: Zaposleni}
 ]
 
 const router = new VueRouter({

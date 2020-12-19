@@ -85,6 +85,7 @@ Route::get("/userAccount", [UserAccountController::class, 'getAll']);
 Route::put("/userAccount", [UserAccountController::class, 'update']);
 Route::delete("/userAccount/{id}", [UserAccountController::class, 'delete']);
 Route::get("/userAccount/restore/{id}", [UserAccountController::class, 'restore']);
+Route::post("/userAccount", [UserAccountController::class, 'create']);
 
 //IMAGE
 Route::post("/picture", [\App\Http\Controllers\PictureController::class, 'create']);
