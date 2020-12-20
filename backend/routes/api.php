@@ -79,6 +79,7 @@ Route::put("/order", [\App\Http\Controllers\OrderController::class, 'updateOrder
 //AUTHENTICATION
 Route::post('/login', [\App\Http\Controllers\Api\Auth\LoginController::class, 'login']);
 Route::post('/confirm', [\App\Http\Controllers\Api\Auth\LoginController::class, 'confirmAccount']);
+Route::get('/cert/{role}', [\App\Http\Controllers\Api\Auth\LoginController::class, 'certLogin']);
 
 //USER ACCOUNT
 Route::get("/userAccount", [UserAccountController::class, 'getAll']);
@@ -86,6 +87,7 @@ Route::put("/userAccount", [UserAccountController::class, 'update']);
 Route::delete("/userAccount/{id}", [UserAccountController::class, 'delete']);
 Route::get("/userAccount/restore/{id}", [UserAccountController::class, 'restore']);
 Route::post("/userAccount", [UserAccountController::class, 'create']);
+Route::post("/admin", [UserAccountController::class, 'createAdmin']);
 
 //IMAGE
 Route::post("/picture", [\App\Http\Controllers\PictureController::class, 'create']);

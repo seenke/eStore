@@ -1,20 +1,20 @@
 <template>
-  <div id="zaposlen">
-    <div class="credentials">
-      <h3>OSEBNI PODATKI</h3>
+  <div id="zaposlen" class="containerZaposlen">
+    <div class="aktivan">
+      <h3><mark class="green">OSEBNI PODATKI</mark></h3>
       <ul>
-        <li><input v-model="zaposlen.name" :disabled="zaposlen.deleted_at !== null"></li>
-        <li><input v-model="zaposlen.lastname" :disabled="zaposlen.deleted_at !== null"></li>
-        <li><input v-model="zaposlen.email" :disabled="zaposlen.deleted_at !== null"></li>
+        <li class="zaposlen_field"><input v-model="zaposlen.name" :disabled="zaposlen.deleted_at !== null"></li>
+        <li class="zaposlen_field"> <input v-model="zaposlen.lastname" :disabled="zaposlen.deleted_at !== null"></li>
+        <li class="zaposlen_field"><input v-model="zaposlen.email" :disabled="zaposlen.deleted_at !== null"></li>
       </ul>
     </div>
-    <button @click="updateUserAccount" v-if="zaposlen.deleted_at === null">
+    <button class="posodobiUporabnika" @click="updateUserAccount" v-if="zaposlen.deleted_at === null">
       POSODOBI UPORABNIKA
     </button>
-    <button @click="deactivateAccount" v-if="zaposlen.deleted_at === null">
+    <button class="deaktivirajUporabnika" @click="deactivateAccount" v-if="zaposlen.deleted_at === null">
       DEAKTIVIRAJ UPORABNIKA
     </button>
-    <button @click="activateAccount" v-if="zaposlen.deleted_at !== null">
+    <button class="aktivirajUporabnika" @click="activateAccount" v-if="zaposlen.deleted_at !== null">
       AKTIVIRAJ UPORABNIKA
     </button>
   </div>
@@ -39,35 +39,35 @@ export default {
       };
       const apiService = new ApiService(this.$store.getters.authToken);
       apiService.updateUserAccount(obj)
-        .then((response)=> {
-          this.$emit('update');
-          console.log(response)
-        })
-        .catch((err)=> {
-          console.log(err.response);
-        })
+          .then((response)=> {
+            this.$emit('update');
+            console.log(response)
+          })
+          .catch((err)=> {
+            console.log(err.response);
+          })
     },
     "deactivateAccount": function () {
       const apiService = new ApiService(this.$store.getters.authToken);
       apiService.deleteUserAccount(this.zaposlen.id)
-      .then((res) => {
-        console.log(res)
-        this.$emit('update');
-      })
-      .catch((err)=> {
-        console.log(err);
-      })
+          .then((res) => {
+            console.log(res)
+            this.$emit('update');
+          })
+          .catch((err)=> {
+            console.log(err);
+          })
     },
     "activateAccount": function () {
       const apiService = new ApiService(this.$store.getters.authToken);
       apiService.restoreUserAccount(this.zaposlen.id)
-      .then((response)=> {
-        this.$emit('update');
-        console.log(response);
-      })
-      .catch((err)=> {
-        console.log(err);
-      })
+          .then((response)=> {
+            this.$emit('update');
+            console.log(response);
+          })
+          .catch((err)=> {
+            console.log(err);
+          })
     }
   },
   data: function () {
@@ -87,10 +87,107 @@ export default {
   list-style: none;
 }
 #zaposlen {
-  border: 1px solid white;
   margin-bottom: 1.5rem;
 }
 #zaposlen button {
   margin-left: 3rem;
+}
+
+.containerZaposlen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.zaposlen_field {
+  display: flex;
+  width: 60%;
+  margin: 0 auto;
+  align-items: center;
+  transition: all 0.5s ease-out;
+  padding: 5px;
+}
+
+.zaposlen_field input {
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  height: 30px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+mark.green {
+  color:#6cb33e;
+  background: none;
+}
+
+.aktivan{
+  border-radius: 25px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 545px;
+  height: 200px;
+  align: center;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1), 0px 0px 50px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease-out;
+  margin-bottom: 10px;
+}
+
+.aktivan h3{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.posodobiUporabnika {
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #6cb33e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bolder;
+  margin-bottom: 100px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.deaktivirajUporabnika {
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #BD0000;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bolder;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.aktivirajUporabnika{
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #6cb33e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bolder;
+  margin-bottom: 100px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 </style>

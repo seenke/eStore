@@ -14,7 +14,6 @@
     <h2>SKUPNA CENA: <mark class="green">{{calculateTotal()}}€</mark></h2>
     <br>
     <button @click="checkout" class="buttonCheckout" v-if="(this.$store.getters.shoppingCart) !== '[]' ">CHECKOUT</button>
-    {{this.$store.getters.shoppingCart}}
   </div>
 </template>
 

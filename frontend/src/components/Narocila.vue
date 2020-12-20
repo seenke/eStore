@@ -77,15 +77,15 @@ export default {
       else {
         promise = apiService.getSelfOrders();
       }
-        promise
-        .then((orders) => {
-          this.orders = orders;
-          this.sortOrders();
-        })
-        .catch((err) => {
-          console.log(err.response);
-          this.$alert('Napaka pri pridobivanju narocil', 'Narocila', 'error');
-        })
+      promise
+          .then((orders) => {
+            this.orders = orders;
+            this.sortOrders();
+          })
+          .catch((err) => {
+            console.log(err.response);
+            this.$alert('Napaka pri pridobivanju narocil', 'Narocila', 'error');
+          })
     },
     "sortOrders": function () {
       const orders = this.orders.orders;
@@ -121,23 +121,22 @@ export default {
 </script>
 
 <style scoped>
-  .narocilaContainer{
-    height: 100%;
-    display: inline-block;
-    margin-left: 1.5rem;
-  }
-  .narocilaContainer ul {
-    text-align: center;
-  }
-  .narocilaContainer ul li {
-    list-style: none;
-  }
-  .narocilo {
-    border: 1px solid white;
-    color: white;
-  }
-  .narocilaContainer_header {
-    text-align: center;
-    color: white;
-  }
+.narocilaContainer{
+  height: 100%;
+  display: inline-block;
+  margin-left: 1.5rem;
+}
+.narocilaContainer ul {
+  text-align: center;
+}
+.narocilaContainer ul li {
+  list-style: none;
+}
+.narocilo {
+  color: white;
+}
+.narocilaContainer_header {
+  text-align: center;
+  color: white;
+}
 </style>

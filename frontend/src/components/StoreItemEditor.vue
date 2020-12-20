@@ -22,15 +22,15 @@
         <div class="info">
           <div class="info_item">
             <h3>IME</h3>
-            <input v-model="storeItem.storeItem.name" type="text">
+            <input class="info_item_input1" v-model="storeItem.storeItem.name" type="text">
           </div>
           <div class="info_item">
             <h3>CENA</h3>
-            <input v-model="storeItem.storeItem.price" type="number">
+            <input class="info_item_input1" v-model="storeItem.storeItem.price" type="number">
           </div>
           <div class="info_item">
             <h3>OPIS IZDELKA</h3>
-            <input v-model="storeItem.storeItem.description" type="text">
+            <input class="info_item_input2" v-model="storeItem.storeItem.description" type="text">
           </div>
         </div>
       </div>
@@ -124,8 +124,8 @@ export default {
     }
   },
   beforeMount() {
-      const apiService = new ApiService(this.$store.getters.authToken);
-      apiService.getStoreItem(this.$route.params.id)
+    const apiService = new ApiService(this.$store.getters.authToken);
+    apiService.getStoreItem(this.$route.params.id)
         .then((response) => {
           this.storeItem = response;
           console.log(response)
@@ -138,89 +138,117 @@ export default {
 </script>
 
 <style scoped>
-  .updateItem {
-    margin-left: 46.5rem;
-    margin-top: 4rem;
-  }
-  .drop_container{
-    margin-left: 40rem;
-  }
-  .image_container{
-    width: 80rem;
-    margin-left:25rem ;
-  }
-  .mainpic {
-    border-radius: 30px;
-    transform: scale(0.9);
-    display: inline-block;
-  }
-  .storeItemEditor h2 {
-    text-align: center;
-    margin-bottom: 1rem;
-    color: white;
-  }
-  .deleted {
-    border: 3px solid red;
-  }
+.updateItem {
+  margin-left: 46.5rem;
+  margin-top: 4rem;
+}
+.drop_container{
+  margin-left: 40rem;
+}
+.image_container{
+  width: 80rem;
+  margin-left:25rem ;
+}
+.mainpic {
+  border-radius: 30px;
+  transform: scale(0.9);
+  display: inline-block;
+}
+.storeItemEditor h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: white;
+}
+.deleted {
+  border: 3px solid red;
+}
 
-  .horizontal-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.horizontal-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .itemForSale{
-    border-radius: 25px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    width: 450px;
-    height: 770px;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1), 0px 0px 50px rgba(0, 0, 0, 0.1);
-    background: rgba(0, 0, 0, 0.3);
-    transition: all 0.5s ease-out;
-  }
+.itemForSale{
+  border-radius: 25px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  width: 450px;
+  height: 770px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1), 0px 0px 50px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease-out;
+}
 
-  button {
-    margin: 0 auto;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
-    background: #6cb33e;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 30px;
-    font-weight: bolder;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);}
+button {
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #6cb33e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bolder;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);}
 
-  .info{
-    color: white;
-    text-align: center;
-  }
+.info{
+  color: white;
+  text-align: center;
+}
 
-  .info_item{
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
+.info_item{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 
-  .info_item h3 {
-    color: #6cb33e;
-    margin-bottom: 0.5rem;
-  }
+.info_item h3 {
+  color: #6cb33e;
+  margin-bottom: 0.5rem;
+}
 
-  .rating {
-    width: 7rem;
-    margin: auto;
-  }
+.info_item_input1 {
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  width: 200px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  height: 30px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
 
-  .heading {
-    margin-bottom: 1rem;
-    color: #6cb33e;
-  }
+}
+
+.info_item_input2 {
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  width: 500px;
+  height: 500px;
+  min-height: 100px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  height: 30px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+
+}
+
+.rating {
+  width: 7rem;
+  margin: auto;
+}
+
+.heading {
+  margin-bottom: 1rem;
+  color: #6cb33e;
+}
 </style>

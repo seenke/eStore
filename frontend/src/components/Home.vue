@@ -1,7 +1,6 @@
 <template>
   <ul>
     <h1>POZDRAVLJENI V SPLETNI TRGOVINI</h1>
-    <p>{{this.$store.getters.user}}</p>
   </ul>
 </template>
 

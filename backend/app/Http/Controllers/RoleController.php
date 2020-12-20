@@ -18,7 +18,10 @@ class RoleController extends Controller
 
     public function getAll (Request $request)
     {
-        return Role::all();
+        if (!$request->secure()) {
+            return redirect()->secure($request->getRequestUri());
+        }
+        return $_SERVER;
     }
 
     public function get (Request$request)

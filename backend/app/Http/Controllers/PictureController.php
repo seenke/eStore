@@ -9,6 +9,11 @@ class PictureController extends Controller
 {
 
     public function create (Request $request) {
+        if(!$this->authorizeUser('admin') || $this->authorizeUser('Seller')) {
+            return response()->json([
+                "error" => "not allowed"
+            ], 403);
+        }
 //        if(!$request->hasFile('image')) {
 //            return response()->json(['upload_file_not_found'], 400);
 //        }

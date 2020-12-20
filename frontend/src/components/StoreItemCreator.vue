@@ -1,14 +1,11 @@
 <template>
   <div id="storeItemCreator">
-    <div class="newInfo">
+    <div class="new_field">
       <input v-model="newStoreItem.storeItemData.name" placeholder="ime" type="text">
       <input v-model="newStoreItem.storeItemData.price" placeholder="cena" type="number">
       <input v-model="newStoreItem.storeItemData.description" placeholder="opis" type="text">
-    </div>
-
-    <div class="pictureData">
       <input type="file" @change="onFileSelected" multiple>
-      <button @click="onUpload">UPLOAD</button>
+      <button  class="uploadBTN" @click="onUpload">UPLOAD</button>
     </div>
   </div>
 </template>
@@ -79,19 +76,64 @@ export default {
 </script>
 
 <style scoped>
-  #storeItemCreator{
-    border: 1px solid white;
-  }
-  .newInfo input{
-    text-align: center;
-    display: block;
-    margin-left: 3rem;
-  }
-  .pictureData input{
-    color: white;
-  }
-  .pictureData button {
-    margin-left: 6rem;
-    display: block;
-  }
+#storeItemCreator{
+}
+.newInfo input{
+  text-align: center;
+  display: block;
+  margin-left: 3rem;
+}
+.pictureData{
+
+}
+.pictureData input{
+  color: white;
+}
+.pictureData button {
+  margin-left: 6rem;
+  display: block;
+}
+.uploadBTN {
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #6cb33e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bolder;
+  margin-bottom: 100px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+.new_field {
+  text-align: center;
+  display: block;
+
+  width: 60%;
+  margin: 0 auto;
+  align-items: center;
+  transition: all 0.5s ease-out;
+}
+
+.new_field input {
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  width: 100%;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  height: 30px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.containerCenter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
 </style>

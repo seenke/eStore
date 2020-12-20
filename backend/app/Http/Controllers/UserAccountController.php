@@ -6,19 +6,56 @@ use App\Models\PostOffice;
 use App\Models\Role;
 use App\Models\UserAccount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserAccountController extends Controller
 {
     //
 
-    function create(Request $request)
-    {
+    function createAdmin (Request $request) {
         $userAccount = new UserAccount();
         $userAccount->fill([
             "name" => $request['name'],
             "lastname" => $request['lastname'],
             "email" => $request['email'],
-            "password" => $request['password'],
+            "password" => Hash::make($request['password']),
+            "confirmation_code" => $request['confirmation_code']
+        ]);
+
+        $role = Role::where('role', 'admin')->get();
+        if (count($role) == 0)
+        {
+            $role = new Role();
+            $role->fill([
+                "role" => "admin"
+            ]);
+            $role->save();
+        }else {
+            $role = $role[0];
+        }
+
+        $userAccount->role()->associate($role);
+
+        $userAccount->save();
+
+        return response()->json([
+            "message"=>"uspesno ustvarjen nov uporabniski racun "
+        ]);
+    }
+
+    function create(Request $request)
+    {
+        if(!$this->authorizeUser('admin') || $this->authorizeUser('Seller')) {
+            return response()->json([
+                "error" => "not allowed"
+            ], 403);
+        }
+        $userAccount = new UserAccount();
+        $userAccount->fill([
+            "name" => $request['name'],
+            "lastname" => $request['lastname'],
+            "email" => $request['email'],
+            "password" => Hash::make($request['password']),
             "confirmation_code" => $request['confirmation_code']
         ]);
 
@@ -43,7 +80,11 @@ class UserAccountController extends Controller
     }
 
     function getAll(Request $request) {
-        //TODO: ADD LOGIC FOR AUTHORIZATION AND AUTHENTICATION OF USER --> ONLY ADMIN AND SELLER ROLE ALLOWED
+        if(!$this->authorizeUser('admin') || $this->authorizeUser('Seller')) {
+            return response()->json([
+                "error" => "not allowed"
+            ], 403);
+        }
         $userAccount = $this->authUser();
         if($userAccount === false) {
             return response()->json([
@@ -120,6 +161,11 @@ class UserAccountController extends Controller
     }
 
     function update (Request $request) {
+        if(!$this->authorizeUser('admin') || $this->authorizeUser('Seller')) {
+            return response()->json([
+                "error" => "not allowed"
+            ], 403);
+        }
         $userAccount = UserAccount::withTrashed()->where('id', $request['id'])->get()[0];
         $role = $userAccount->role()->get()[0]['role'];
         if ($role === 'Seller') {
@@ -165,6 +211,11 @@ class UserAccountController extends Controller
 
     function delete (Request $request)
     {
+        if(!$this->authorizeUser('admin') || $this->authorizeUser('Seller')) {
+            return response()->json([
+                "error" => "not allowed"
+            ], 403);
+        }
         UserAccount::find($request->route('id'))->delete();
 
         return response() -> json([], 200);
@@ -172,6 +223,11 @@ class UserAccountController extends Controller
 
     function restore (Request $request)
     {
+        if(!$this->authorizeUser('admin') || $this->authorizeUser('Seller')) {
+            return response()->json([
+                "error" => "not allowed"
+            ], 403);
+        }
         UserAccount::withTrashed()->find($request->route('id'))->restore();
         return response() -> json([], 200);
     }

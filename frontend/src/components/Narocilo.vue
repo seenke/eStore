@@ -1,9 +1,9 @@
 <template>
-  <div id="narocilo">
+  <div id="narocilo" class="narocilo">
     <ul>
-      <h2>NAROCILO - {{narocilo.order.id}}</h2>
+      <h2>NAROCILO: <mark class="green">{{narocilo.order.id}}</mark></h2>
       <li v-for="storeItem in narocilo.storeItems" :key="storeItem.id">
-        {{storeItem.name}} - {{storeItem.pivot.quantity}}  x {{storeItem.pivot.primary_price}}
+        <mark class="green">{{storeItem.name}}</mark> - {{storeItem.pivot.quantity}}  x {{storeItem.pivot.primary_price}}€
       </li>
       <h3>ODDANO: {{narocilo.order.created_at}} </h3>
     </ul>
@@ -58,5 +58,21 @@ export default {
 </script>
 
 <style scoped>
+mark.green {
+  color:#6cb33e;
+  background: none;
+}
+.narocilo{
+  border-radius: 25px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 400px;
+  height: 200px;
+  align: center;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1), 0px 0px 50px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease-out;
+  margin-bottom: 10px;
+}
 
 </style>
