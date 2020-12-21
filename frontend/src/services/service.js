@@ -284,7 +284,8 @@ export default class ApiService {
                 .then((response) => {
                     resolve(response.data);
                 })
-                .catch((err) => {                    reject(err);
+                .catch((err) => {
+                    reject(err);
                 })
         })
     }

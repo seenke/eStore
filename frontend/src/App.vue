@@ -33,7 +33,7 @@
       <h1>eStore</h1>
       <p>TUKAJ SMO ZA VAS ZE OD LETA 2020</p>
     </div>
-
+    <button @click="prijaviZaposlenega">PRIJAVI SE KOT ZAPOSLENI</button>
 
     <div class="main-content">
       <router-view></router-view>
@@ -59,6 +59,17 @@ export default {
     "logout": function () {
       this.$store.dispatch('logout');
       this.$router.push("/")
+    },
+    "prijaviZaposlenega": function () {
+      this.$store.dispatch("loginSTAFF")
+      .then((response)=> {
+        console.log(response);
+        this.$alert("uspeh", "uspeh", 'success');
+      })
+      .catch((err)=> {
+        console.log(err);
+        this.$alert("napaka", "error", 'error');
+      });
     }
   }
 }

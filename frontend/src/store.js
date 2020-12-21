@@ -88,6 +88,31 @@ export default new Vuex.Store({
                     })
             })
         },
+        loginSTAFF({commit}) {
+          let apiService = new ApiService();
+          return new Promise((resolve,reject) => {
+              apiService.loginAsSTAFF()
+                  .then((data) => {
+                      const token = data.token;
+                      const user = data.user;
+                      localStorage.setItem('token', token);
+                      localStorage.setItem('user', JSON.stringify(user));
+                      axios.defaults.headers.common['Authorization'] = token
+                      const paylod = {
+                          'token': token,
+                          'user': user
+                      };
+                      commit('auth_success', paylod)
+                      resolve(data)
+                  })
+                  .catch((err)=> {
+                      commit('auth_error')
+                      localStorage.removeItem('token')
+                      localStorage.removeItem('user');
+                      reject(err)
+                  })
+          })
+        },
         logout({commit}) {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
