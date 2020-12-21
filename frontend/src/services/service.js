@@ -277,4 +277,15 @@ export default class ApiService {
                 })
         })
     }
+
+    loginAsSTAFF () {
+        return new Promise((resolve, reject) =>  {
+            axios.get(this.apiParameters.development + "cert/login")
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((err) => {                    reject(err);
+                })
+        })
+    }
 }

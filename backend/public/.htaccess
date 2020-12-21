@@ -18,4 +18,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+    <If "%{REQUEST_URI} =~ m#/cert/#">
+	SSLVerifyClient require
+	SSLVerifyDepth 1
+    </If>
+    SSLOptions +ExportCertData
 </IfModule>

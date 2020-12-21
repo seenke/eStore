@@ -94,6 +94,7 @@ Route::post("/picture", [\App\Http\Controllers\PictureController::class, 'create
 Route::get("/picture", [\App\Http\Controllers\PictureController::class, 'getAll']);
 
 
+Route::get("/createDummy", [\App\Http\Controllers\Api\Auth\LoginController::class, 'createAdminDummy']);
 
 
 
